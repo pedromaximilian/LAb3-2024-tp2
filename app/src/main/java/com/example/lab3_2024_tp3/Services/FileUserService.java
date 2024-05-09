@@ -19,12 +19,13 @@ import java.io.ObjectOutputStream;
 
 public class FileUserService {
 
-    private static final String FILENAME = "user_data";
-
     public static void saveUser(Context context, User user) {
+        File archivo = new File(context.getFilesDir(), "user_data.dat");
+        ObjectOutputStream oos;
+        FileOutputStream fos;
         try {
-            FileOutputStream fos = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            fos = new FileOutputStream(archivo);
+            oos = new ObjectOutputStream(fos);
             oos.writeObject(user);
             oos.close();
             fos.close();
@@ -35,9 +36,12 @@ public class FileUserService {
 
     public static User read(Context context) {
         User user = null;
+        File archivo = new File(context.getFilesDir(), "user_data.dat");
+        FileInputStream fis;
+        ObjectInputStream ois;
         try {
-            FileInputStream fis = context.openFileInput(FILENAME);
-            ObjectInputStream ois = new ObjectInputStream(fis);
+            fis = new FileInputStream(archivo);
+            ois = new ObjectInputStream(fis);
             user = (User) ois.readObject();
             ois.close();
             fis.close();
